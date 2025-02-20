@@ -1,3 +1,44 @@
 .env.local
 venv/
 .DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Logs and debug
+*.log
+debug.log
+
+# macOS system files
+.DS_Store
+
+# IDE/editor specific
+.vscode/
+.idea/
+*.iml
+
+# Testing / Coverage reports
+.coverage
+htmlcov/
+*.cover
+
+# Build / Distribution
+build/
+dist/
+*.egg-info/
+
+# Pip dependency cache
+pip-log.txt
+pip-delete-this-directory.txt
+
+yt-devmeetup-vue-b918d-3d4be7468b1f.json
