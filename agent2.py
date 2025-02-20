@@ -29,18 +29,30 @@ logger.setLevel(logging.INFO)
 
 outbound_trunk_id = os.getenv("SIP_OUTBOUND_TRUNK_ID")
 _default_instructions = (
-    "Bạn là chuyên viên thu hồi công nợ của công ty Di Mô. Giao tiếp của bạn với khách hàng sẽ là giọng nói."
-    "Bạn sẽ tham gia cuộc gọi với một khách hàng có khoản nợ chưa thanh toán. Nhiệm vụ của bạn là xác nhận danh tính khách, thông báo khoản nợ và đề nghị khách thanh toán."
-    "Cụ thể, bạn cần thực hiện các bước sau:"
-    "1. Chào hỏi khách hàng và xác nhận đúng danh tính theo tên."
-    "2. Thông báo khoản nợ là 3 triệu đồng đã quá hạn thanh toán và yêu cầu khách thanh toán trước ngày 21 tháng 2 năm 2025."
-    "3. Hỏi khách hàng liệu có thể thanh toán đúng hạn không."
-    "   - Nếu khách có thể thanh toán đúng hạn, hãy xác nhận lại với khách."
-    "   - Nếu khách chưa thể thanh toán đúng hạn, hãy hỏi xem khách có thể thanh toán vào ngày nào."
-    "   - Nếu khách không muốn thanh toán, hãy ghi nhận và kết thúc cuộc gọi một cách lịch sự."
-    "Luôn giữ thái độ lịch sự, chuyên nghiệp và tập trung vào việc thu hồi nợ hiệu quả."
+    "Bạn là chuyên viên thu hồi công nợ của công ty Di Mô, tên là Hiền. Giao tiếp của bạn với khách hàng sẽ là giọng nói."
+    "Bạn sẽ tham gia cuộc gọi với một khách hàng có khoản nợ chưa thanh toán. Nhiệm vụ của bạn là xác nhận danh tính khách, thông báo khoản nợ và đề nghị khách thanh toán. "
+    "Cụ thể, bạn cần thực hiện các bước sau: "
+    "1. Chào hỏi khách hàng và xác nhận đúng danh tính theo tên. Xin phép dành ít phút trao đổi "
+    "2. Thông báo khoản nợ là xxx triệu đồng đã quá hạn thanh toán và yêu cầu khách thanh toán trước ngày 21 tháng 2 năm 2025. "
+    "3. Hỏi khách hàng liệu có thể thanh toán đúng hạn không. "
+    "   - Nếu khách có thể thanh toán đúng hạn, hãy xác nhận lại với khách. "
+    "   - Nếu khách chưa thể thanh toán đúng hạn, hãy hỏi xem khách có thể thanh toán vào ngày nào. "
+    "   - Nếu khách không muốn thanh toán, hãy ghi nhận và kết thúc cuộc gọi một cách lịch sự. "
+    "Luôn giữ thái độ lịch sự, chuyên nghiệp và tập trung vào việc thu hồi nợ hiệu quả. "
+    "Thông báo lịch sự đến khách hàng và kết thúc cuộc gọi ngay sau đó"
 )
-
+# _default_instructions = (
+#     "Bạn là chuyên viên thu hồi công nợ của công ty Di Mô. Giao tiếp của bạn với khách hàng sẽ là giọng nói."
+#     "Bạn sẽ tham gia cuộc gọi với một khách hàng có khoản nợ chưa thanh toán. Nhiệm vụ của bạn là xác nhận danh tính khách, thông báo khoản nợ và đề nghị khách thanh toán."
+#     "Cụ thể, bạn cần thực hiện các bước sau:"
+#     "1. Chào hỏi khách hàng và xác nhận đúng danh tính theo tên."
+#     "2. Thông báo khoản nợ là xxx VND đã quá hạn thanh toán và yêu cầu khách thanh toán trước ngày DD/MM/YYYY."
+#     "3. Hỏi khách hàng liệu có thể thanh toán đúng hạn không."
+#     "   - Nếu khách có thể thanh toán đúng hạn, hãy xác nhận lại với khách."
+#     "   - Nếu khách chưa thể thanh toán đúng hạn, hãy hỏi xem khách có thể thanh toán vào ngày nào."
+#     "   - Nếu khách không muốn thanh toán, hãy ghi nhận và kết thúc cuộc gọi một cách lịch sự."
+#     "Luôn giữ thái độ lịch sự, chuyên nghiệp và tập trung vào việc thu hồi nợ hiệu quả."
+# )
 
 async def entrypoint(ctx: JobContext):
     global _default_instructions, outbound_trunk_id
@@ -53,17 +65,15 @@ async def entrypoint(ctx: JobContext):
     logger.info(f"dialing {phone_number} to room {ctx.room.name}")
 
     # look up the user's phone number and appointment details
-    customer_name = "Dũng"
-    debt_amount = "3 triệu 2 trăm"
-    due_date = "ngày 21 tháng 2 năm 2025."
+    customer_name = "Nguyễn Tiến Dũng"
+    debt_amount = "3 triệu 2 trăm ngàn đồng"
+    due_date = "ngày 25 tháng 2 năm 2025."
     
     instructions = (
         _default_instructions
-        + f"Tên khách hàng là {customer_name}. Khoản nợ cần thanh toán là {debt_amount} và đã quá hạn thanh toán."
-        + f"Vui lòng nhắc khách thanh toán trước ngày {due_date}. Nếu khách chưa thể thanh toán đúng hạn, hãy hỏi xem khách có thể thanh toán vào ngày nào."
-        + f"Trường hợp khách từ chối thanh toán, ghi nhận thông tin và kết thúc cuộc gọi lịch sự."
-        + "Chỉ kết thúc cuộc gọi khi khách hàng đã xác nhận và không có câu hỏi thêm. "
-        + "Không kết thúc cuộc gọi khi bạn vẫn còn đang nói."
+        + f"Tên khách hàng là {customer_name}. Khoản nợ cần thanh toán là {debt_amount} và đã quá hạn thanh toán. "
+        + f"Vui lòng nhắc khách thanh toán trước ngày {due_date}. Nếu khách chưa thể thanh toán đúng hạn, hãy hỏi xem khách có thể thanh toán vào ngày nào. "
+        + f"Trường hợp khách từ chối thanh toán, ghi nhận lại lý do và kết thúc cuộc gọi. "
     )
 
     # `create_sip_participant` starts dialing the user
@@ -82,8 +92,8 @@ async def entrypoint(ctx: JobContext):
     # start the agent, either a VoicePipelineAgent or MultimodalAgent
     # this can be started before the user picks up. The agent will only start
     # speaking once the user answers the call.
-    # run_voice_pipeline_agent(ctx, participant, instructions)
-    run_multimodal_agent(ctx, participant, instructions)
+    run_voice_pipeline_agent(ctx, participant, instructions)
+    # run_multimodal_agent(ctx, participant, instructions)
 
     # in addition, you can monitor the call status separately
     start_time = perf_counter()
@@ -125,6 +135,8 @@ class CallActions(llm.FunctionContext):
 
     async def hangup(self):
         try:
+            # await asyncio.sleep(2)
+            # await asyncio.sleep(0.1)
             await self.api.room.remove_participant(
                 api.RoomParticipantIdentity(
                     room=self.room.name,
@@ -137,7 +149,7 @@ class CallActions(llm.FunctionContext):
 
     @llm.ai_callable()
     async def end_call(self):
-        """Chỉ kết thúc cuộc gọi khi khách hàng đã xác nhận và không có câu hỏi thêm. """
+        """kết thúc cuộc gọi"""
         logger.info(f"ending the call for {self.participant.identity}")
         # await asyncio.sleep(2)
         await self.hangup()
@@ -171,8 +183,6 @@ class CallActions(llm.FunctionContext):
     #     )
     #     return "reservation confirmed"
 
-
-
     @llm.ai_callable()
     async def detected_answering_machine(self):
         """Called when the call reaches voicemail. Use this tool AFTER you hear the voicemail greeting"""
@@ -194,7 +204,7 @@ def run_voice_pipeline_agent(
         vad=ctx.proc.userdata["vad"],
         # stt=deepgram.STT(model="nova-2-phonecall"),
         stt=deepgram.stt.STT(
-            model="nova-2",
+            model="nova-2-general",
    #         model="whisper-medium",
             interim_results=True,
             smart_format=True,
@@ -204,16 +214,20 @@ def run_voice_pipeline_agent(
             keywords=[("LiveKit", 1.5)],
             language="vi",
         ),
-        llm=openai.LLM.with_vertex(model="google/gemini-2.0-flash-exp"),
-        # llm=openai.LLM(),
+        # llm=openai.LLM.with_vertex(model="google/gemini-2.0-flash-exp"),
+        # llm=google.LLM(
+        #     model="gemini-2.0-flash-exp",
+        #     temperature="0.6",
+        # ),
+        llm=openai.LLM(model="gpt-4o"),
         # tts=openai.TTS(),
         tts=elevenlabs.tts.TTS(
             model="eleven_turbo_v2_5",
             voice=elevenlabs.tts.Voice(
             # id="EXAVITQu4vr4xnSDxMaL",
             # name="Bella",
-            id="XSQQLeoHwWnBv8tjJ1T7",
-            name="Eric",
+            id="HAAKLJlaJeGl18MKHYeg",
+            name="Trang",
             category="premade",
             settings=elevenlabs.tts.VoiceSettings(
                 stability=0.71,
@@ -232,6 +246,9 @@ def run_voice_pipeline_agent(
     )
 
     agent.start(ctx.room, participant)
+    
+    asyncio.create_task(agent.say("Xin chào, tôi là Hiền từ công ty Di Mô. Tôi gọi để trao đổi về khoản nợ của bạn. Bạn có thể dành ít phút để trao đổi không?"))
+
 
 
 def run_multimodal_agent(
@@ -239,10 +256,16 @@ def run_multimodal_agent(
 ):
     logger.info("starting multimodal agent")
 
-    model = openai.realtime.RealtimeModel(
+    # model = openai.realtime.RealtimeModel(
+    #     instructions=instructions,
+    #     modalities=["audio", "text"],
+    # )
+    model=google.beta.realtime.RealtimeModel(
+        voice="Puck",
+        temperature=0.8,
         instructions=instructions,
-        modalities=["audio", "text"],
-    )
+        modalities=["audio", "text"]
+    ),
     agent = MultimodalAgent(
         model=model,
         fnc_ctx=CallActions(api=ctx.api, participant=participant, room=ctx.room),
