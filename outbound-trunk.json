@@ -1,0 +1,7 @@
+{
+  "trunk": {
+    "name": "My outbound trunk",
+    "address": "210.211.108.3:5060",
+    "numbers": ["+84996674699"]
+  }
+}
